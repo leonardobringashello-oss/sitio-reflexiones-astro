@@ -1,0 +1,42 @@
+{
+  "name": "reflexiones-escalante-2026",
+  "version": "1.0.0",
+  "description": "Biblioteca de Reflexiones — Pr. Walter Escalante (2026). Sitio estático + pipeline de ingesta y build.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/builder/build-data.mjs && astro build",
+    "build:data": "node scripts/builder/build-data.mjs",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "scrape:once": "python scripts/scraper/scraper.py --once && npm run build:data",
+    "scrape:watch": "python scripts/scraper/scraper.py --interval 15",
+    "seo:check": "node scripts/seo/check.mjs",
+    "linking:build": "node scripts/linking/build.mjs"
+  },
+  "keywords": [
+    "reflexiones",
+    "escalante",
+    "biblioteca",
+    "pastoral"
+  ],
+  "author": "Pr. Walter Escalante",
+  "license": "MIT",
+  "devDependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.18.2",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.0.0",
+    "vitest": "^5.0.0"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "fuse.js": "^7.5.0",
+    "sharp": "^0.35.4"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true,
+    "sharp@0.35.4": true
+  }
+}

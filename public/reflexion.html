@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirigiendo… — Biblioteca de Reflexiones</title>
+  <link rel="canonical" href="/reflexion/" id="canonical" />
+  <meta name="robots" content="noindex" />
+  <style>body{font-family:Roboto,sans-serif;display:grid;place-items:center;min-height:100vh;color:#5c5a52}a{color:#9a7b1f}</style>
+</head>
+<body>
+  <p>Esta reflexión se movió — redirigiendo… <a id="fallback" href="/">Volver a la biblioteca</a></p>
+  <script>
+    (function () {
+      try {
+        var slug = new URLSearchParams(location.search).get('slug');
+        if (slug && /^[a-z0-9_-]+$/i.test(slug)) {
+          var dest = '/reflexion/' + encodeURIComponent(slug);
+          document.getElementById('canonical').setAttribute('href', dest);
+          document.getElementById('fallback').setAttribute('href', dest);
+          location.replace(dest + location.hash);
+        } else {
+          location.replace('/' + location.hash);
+        }
+      } catch (e) { location.replace('/'); }
+    })();
+  </script>
+</body>
+</html>

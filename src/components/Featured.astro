@@ -1,0 +1,35 @@
+---
+// src/components/Featured.astro — port de renderFeatured() (ui-helpers.js:82).
+const { item, categories } = Astro.props;
+const cat = item ? ((categories || []).find((c) => c.id === item.categoria)?.short || item.categoria || '') : '';
+const excerpt = item ? ((item.excerpt && item.excerpt.trim()) || '') : '';
+const versiculo = item ? ((item.versiculos && item.versiculos[0]) || 'Reflexión pastoral') : '';
+---
+{item ? (
+  <>
+  <div class="feature-card-top">
+    <div class="eyebrow">{cat} · {item.fecha} · {item.lecturaMin || 2} min</div>
+    <h2 class="feature-title" transition:name={`title-${item.slug}`}>{item.titulo}</h2>
+  </div>
+  {item.imagenPath ? (
+    <div class="feature-media">
+      <img src={`/${item.imagenPath}`} alt={item.titulo} loading="eager" transition:name={`img-${item.slug}`} onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'" />
+      <div class="feature-media-fallback media-fallback-hidden">{item.titulo}<br /><span class="media-fallback-date">{item.fecha}</span></div>
+    </div>
+  ) : (
+    <div class="feature-media"><div class="feature-media-fallback">{item.titulo}<br /><span class="media-fallback-excerpt">{excerpt.slice(0, 90)}</span></div></div>
+  )}
+  <div class="feature-body">
+    <div class="feature-excerpt">{excerpt}</div>
+    <div class="feature-meta">
+      <span class="versiculo">{versiculo}</span>
+      <span class="meta-dot"></span>
+      <span>{item.palabras || 0} palabras</span>
+      <span class="spacer-flex"></span>
+      <a class="btn-primary" href={`/reflexion/${item.slug}`}>Leer reflexión →</a>
+    </div>
+  </div>
+  </>
+) : (
+  <div class="loading-placeholder loading-placeholder--md">Sin reflexión destacada</div>
+)}

@@ -1,0 +1,3 @@
+# Redirects agnósticos (Netlify / Cloudflare Pages).
+# Astro genera /reflexion/[slug] limpias; este archivo cubre patrones sin query.
+/reflexion.html?slug=* /reflexion/:splat 301

@@ -1,0 +1,24 @@
+[project]
+name = "reflexiones-escalante-2026"
+version = "1.0.0"
+description = "Pipeline de ingesta (scraper) para Biblioteca de Reflexiones"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "black",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]

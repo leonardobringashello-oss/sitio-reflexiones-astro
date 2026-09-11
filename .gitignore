@@ -1,0 +1,41 @@
+# Deps
+node_modules/
+.opencode/
+.agents
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+coverage/
+htmlcov/
+.venv/
+venv/
+
+# Astro / build (generados)
+.astro/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Datos generados (fuente de verdad: content/) — se regeneran con `npm run build:data`
+public/data/reflexiones.json
+public/data/relaciones.json
+public/imagenes/
+public/audios/
+
+# OS / logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+
+# Deploy
+.netlify/
+.vercel/
+
+# Env (nunca commitear secretos)
+.env
+.env.*
+

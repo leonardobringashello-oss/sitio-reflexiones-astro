@@ -1,0 +1,415 @@
+---
+import Base from "../layouts/Base.astro";
+import Card from "../components/Card.astro";
+import Featured from "../components/Featured.astro";
+import { loadItems } from "../lib/items.js";
+import { seoForIndex } from "../lib/seo.js";
+
+const { items, categories, total } = loadItems();
+const seo = seoForIndex(total);
+const orderedCats = [...categories].sort((a, b) => b.id.localeCompare(a.id)).filter((c) => c.count > 0);
+const featured = items[0];
+// Payload mínimo para interactividad client-side (filtros/búsqueda/destacada)
+const clientItems = items.map((i) => ({
+  slug: i.slug,
+  titulo: i.titulo,
+  fecha: i.fecha,
+  categoria: i.categoria,
+  excerpt: i.excerpt,
+  imagenPath: i.imagenPath ? `/${i.imagenPath}` : null,
+  versiculos: i.versiculos,
+  lecturaMin: i.lecturaMin,
+  palabras: i.palabras,
+}));
+const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
+---
+
+<Base title={seo.title} description={seo.description} ogImage={seo.ogImage} canonical={seo.canonical}>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menú" type="button">
+        <svg
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+      <a class="brand" href="/" aria-label="Reflexiones diarias por Walter Escalante — inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <img
+            src="/imagenes/logos/logo-we.webp"
+            alt=""
+            onerror="this.style.display='none'; this.parentElement.textContent='WE';"
+          />
+        </span>
+        <span class="brand-copy">
+          <span class="brand-text">Reflexiones diarias</span>
+          <span class="brand-subtitle">por Walter Escalante</span>
+        </span>
+      </a>
+      <label class="topbar-search" aria-label="Buscar reflexiones">
+        <svg
+          width="15"
+          height="15"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-width="2"
+          aria-hidden="true"
+          class="search-icon"
+          viewBox="0 0 24 24"
+        >
+          <circle cx="11" cy="11" r="7" />
+          <path d="M16.5 16.5 21 21" />
+        </svg>
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Buscar por palabra, tema o versículo…"
+          autocomplete="off"
+          aria-label="Buscar por palabra, tema o versículo"
+        />
+        <button class="search-clear is-hidden" id="searchClear" type="button" aria-label="Limpiar búsqueda">
+          ×
+        </button>
+        <kbd class="search-kbd" title="Pulsa / para buscar">
+          /
+        </kbd>
+      </label>
+      <span id="resultsCount" class="is-hidden" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-label="Navegación por meses">
+      <div class="sidebar-scroll">
+        <div class="sidebar-label">Explorar</div>
+        <nav id="sidebarNav" aria-live="polite">
+          {orderedCats.map((cat) => {
+            const catItems = items.filter((i) => i.categoria === cat.id);
+            const shown = catItems.slice(0, 10);
+            return (
+              <div class="nav-group" data-cat={cat.id}>
+                <button class="nav-group-head" aria-expanded="true">
+                  <span class="chev">▾</span>
+                  <span>{cat.label.toUpperCase()}</span>
+                  <span class="nav-count">{cat.count}</span>
+                </button>
+                <ul class="nav-list">
+                  {shown.map((it) => (
+                    <li class="nav-item">
+                      <a href={`/reflexion/${it.slug}`} title={it.titulo}>
+                        <span class="nav-item-dot"></span>
+                        <span class="truncate">{it.titulo}</span>
+                      </a>
+                    </li>
+                  ))}
+                  {catItems.length > 10 && (
+                    <li class="nav-item">
+                      <a href="#" data-more={cat.id} class="link-more">
+                        +{catItems.length - 10} más…
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <span>Biblioteca pastoral · 2026</span>
+      </div>
+    </aside>
+
+    <div id="overlay" class="mobile-overlay" aria-hidden="true"></div>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <h1 class="hero-title">Reflexiones diarias</h1>
+        <p class="hero-sub">
+          ‘Me senté a pensar’ son pensamientos, reflexiones, opiniones, y en muchos casos bosquejos o resúmenes de
+          mensajes del púlpito en{" "}
+          <a
+            href="https://www.instagram.com/iglesia.restauracion.varela/"
+            style="color: inherit; text-decoration: underline; text-underline-offset: 0.125em; text-decoration-color: rgba(0, 0, 0, 0.3);"
+          >
+            Iglesia Restauración
+          </a>
+          de la ciudad de Florencio Varela. Te invitamos a dejar tus comentarios al pie de cada escrito. ¡Gracias!
+        </p>
+        <p class="hero-sub-spaced mono-faint-sm" id="totalCount" aria-live="polite">
+          {total} de {total} reflexiones
+        </p>
+
+        <article id="featured" class="feature-card" aria-live="polite">
+          <Featured item={featured} categories={categories} />
+        </article>
+
+        <div class="hero-controls" aria-label="Navegación de destacadas">
+          <button id="prevBtn" class="btn-ghost btn-sm" type="button" aria-label="Anterior">
+            Anterior
+          </button>
+          <span class="divider" aria-hidden="true"></span>
+          <span id="heroMeta" class="hero-meta" aria-live="polite"></span>
+          <span class="divider" aria-hidden="true"></span>
+          <button id="nextBtn" class="btn-ghost btn-sm" type="button" aria-label="Siguiente">
+            Siguiente
+          </button>
+        </div>
+
+        <div class="section-head">
+          <h2>Filtrar por mes</h2>
+          <span class="line" aria-hidden="true"></span>
+        </div>
+        <div id="filters" class="filters" aria-label="Filtros por mes">
+          <button class="filter-pill is-active" data-cat="all">
+            Todas <span class="count">{total}</span>
+          </button>
+          {orderedCats.map((cat) => (
+            <button class="filter-pill" data-cat={cat.id}>
+              {cat.short} <span class="count">{cat.count}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="section-head">
+          <h2>Últimas reflexiones</h2>
+          <span class="line" aria-hidden="true"></span>
+        </div>
+
+        <div id="cards" class="cards" aria-live="polite">
+          {items.map((it) => (
+            <Card item={it} categories={categories} />
+          ))}
+        </div>
+        <div id="empty" class="empty empty--spaced" hidden></div>
+
+        <section class="bottom-discovery" aria-label="Descubrir por mes">
+          <div id="bottomPills" class="pills" aria-label="Meses">
+            {orderedCats.map((cat) => (
+              <button class="pill" data-cat={cat.id}>
+                {cat.short}
+                <span class="count">{cat.count}</span>
+              </button>
+            ))}
+          </div>
+          <aside id="popular" class="popular" aria-label="Temas populares">
+            Popular: &nbsp;
+            {[...items]
+              .sort((a, b) => b.palabras - a.palabras)
+              .slice(0, 8)
+              .map((it, i, arr) => (
+                <span>
+                  <a href={`/reflexion/${it.slug}`}>{it.titulo}</a>
+                  {i < arr.length - 1 ? <span> &nbsp;·&nbsp; </span> : null}
+                </span>
+              ))}
+          </aside>
+          <p class="footer-legal">Contenido original del Pr. Walter Escalante · Uso pastoral</p>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script
+    id="astro-data"
+    type="application/json"
+    set:html={JSON.stringify({ items: clientItems, catLabel, total })}
+  ></script>
+  <script>
+    import Fuse from "fuse.js";
+
+    // Interactividad client-side (sin framework): filtros + búsqueda + destacada.
+    (() => {
+      const dataEl = document.getElementById("astro-data");
+      const DATA = dataEl ? JSON.parse(dataEl.textContent) : { items: [], catLabel: {}, total: 0 };
+      let activeCategory = "all";
+      let searchQuery = "";
+      let featuredIdx = 0;
+      const $ = (id) => document.getElementById(id);
+      const cards = $("cards"),
+        empty = $("empty"),
+        featured = $("featured"),
+        heroMeta = $("heroMeta");
+      const totalCount = $("totalCount"),
+        resultsCount = $("resultsCount"),
+        search = $("searchInput");
+
+      document.documentElement.setAttribute("data-theme", "light");
+
+      function buildFuse(list) {
+        return new Fuse(list, {
+          keys: [
+            { name: "titulo", weight: 2 },
+            { name: "versiculos", weight: 1.5 },
+            { name: "excerpt", weight: 1 },
+            { name: "slug", weight: 0.5 },
+          ],
+          threshold: 0.35,
+          ignoreDiacritics: true,
+          ignoreLocation: true,
+          minMatchCharLength: 2,
+        });
+      }
+      function filtered() {
+        let out = DATA.items;
+        if (activeCategory !== "all") out = out.filter((i) => i.categoria === activeCategory);
+        if (searchQuery) {
+          out = buildFuse(out)
+            .search(searchQuery)
+            .map((r) => r.item);
+        }
+        return out;
+      }
+      const esc = (s) =>
+        String(s ?? "").replace(
+          /[&<>"']/g,
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m],
+        );
+      function cardHTML(it) {
+        const cat = esc(DATA.catLabel[it.categoria] || it.categoria || "");
+        const v = esc((it.versiculos && it.versiculos[0]) || "—");
+        const media = it.imagenPath
+          ? `<div class="card-media"><img src="${it.imagenPath}" alt="${esc(it.titulo)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'"><div class="card-media-fallback media-fallback-hidden">${esc(it.titulo)}</div></div>`
+          : `<div class="card-media"><div class="card-media-fallback">${esc(it.titulo)}</div></div>`;
+        return `<a href="/reflexion/${encodeURIComponent(it.slug)}" class="card">${media}<div class="card-body"><div class="card-kicker"><span class="dot"></span> ${cat} <span class="kicker-date">${esc(it.fecha || "")}</span></div><h3 class="card-title">${esc(it.titulo)}</h3><div class="card-excerpt">${esc(it.excerpt || "")}</div><div class="card-meta"><span>${it.lecturaMin || 2} min</span><span class="meta-dot"></span><span>${v}</span></div></div></a>`;
+      }
+      function renderCards(list) {
+        if (resultsCount) resultsCount.textContent = `${list.length}`;
+        if (totalCount) totalCount.textContent = `${list.length} de ${DATA.total} reflexiones`;
+        if (!list.length) {
+          cards.innerHTML = "";
+          empty.hidden = false;
+          empty.innerHTML = `Sin resultados<br><span class="mono-faint-sm">Probá con otra palabra u otro mes</span>`;
+          return;
+        }
+        empty.hidden = true;
+        empty.innerHTML = "";
+        cards.innerHTML =
+          list.slice(0, 20).map(cardHTML).join("") +
+          (list.length > 20
+            ? `<button id="loadMore" class="btn-ghost load-more">Cargar ${list.length - 20} más</button>`
+            : "");
+        document.getElementById("loadMore")?.addEventListener("click", (e) => {
+          e.target.remove();
+          cards.insertAdjacentHTML("beforeend", list.slice(20).map(cardHTML).join(""));
+        });
+      }
+      function renderFeatured(list) {
+        if (!list.length) {
+          featured.innerHTML = `<div class="loading-placeholder loading-placeholder--md">Sin reflexión destacada</div>`;
+          if (heroMeta) heroMeta.textContent = "";
+          return;
+        }
+        featuredIdx = Math.max(0, Math.min(featuredIdx, list.length - 1));
+        const it = list[featuredIdx];
+        const cat = esc(DATA.catLabel[it.categoria] || "");
+        const v = esc((it.versiculos && it.versiculos[0]) || "Reflexión pastoral");
+        const media = it.imagenPath
+          ? `<div class="feature-media"><img src="${it.imagenPath}" alt="${esc(it.titulo)}" loading="eager" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'"><div class="feature-media-fallback media-fallback-hidden">${esc(it.titulo)}<br><span class="media-fallback-date">${esc(it.fecha || "")}</span></div></div>`
+          : `<div class="feature-media"><div class="feature-media-fallback">${esc(it.titulo)}</div></div>`;
+        featured.innerHTML = `<div class="feature-card-top"><div class="eyebrow">${cat} · ${esc(it.fecha || "")} · ${it.lecturaMin || 2} min</div><h2 class="feature-title">${esc(it.titulo)}</h2></div>${media}<div class="feature-body"><div class="feature-excerpt">${esc(it.excerpt || "")}</div><div class="feature-meta"><span class="versiculo">${v}</span><span class="meta-dot"></span><span>${it.palabras || 0} palabras</span><span class="spacer-flex"></span><a class="btn-primary" href="/reflexion/${encodeURIComponent(it.slug)}">Leer reflexión →</a></div></div>`;
+        if (heroMeta) heroMeta.textContent = `${featuredIdx + 1} / ${list.length} — ${it.titulo}`;
+      }
+      function rerender() {
+        const list = filtered();
+        renderFeatured(list);
+        renderCards(list);
+        document
+          .querySelectorAll("#filters .filter-pill")
+          .forEach((b) => b.classList.toggle("is-active", b.getAttribute("data-cat") === activeCategory));
+      }
+      // init heroMeta con lista completa
+      renderFeatured(DATA.items);
+      if (heroMeta && DATA.items.length) heroMeta.textContent = `1 / ${DATA.items.length} — ${DATA.items[0].titulo}`;
+
+      document.querySelectorAll("#filters .filter-pill, #bottomPills .pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.getAttribute("data-cat");
+          featuredIdx = 0;
+          rerender();
+          if (btn.classList.contains("pill")) document.getElementById("main")?.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+      let t = null;
+      search?.addEventListener("input", (e) => {
+        clearTimeout(t);
+        t = setTimeout(() => {
+          searchQuery = e.target.value.trim();
+          featuredIdx = 0;
+          rerender();
+          syncSearchUI();
+        }, 160);
+      });
+      document.getElementById("prevBtn")?.addEventListener("click", () => {
+        const l = filtered();
+        if (!l.length) return;
+        featuredIdx = (featuredIdx - 1 + l.length) % l.length;
+        renderFeatured(l);
+        renderCards(l);
+      });
+      document.getElementById("nextBtn")?.addEventListener("click", () => {
+        const l = filtered();
+        if (!l.length) return;
+        featuredIdx = (featuredIdx + 1) % l.length;
+        renderFeatured(l);
+        renderCards(l);
+      });
+      // drawer + topbar + search UI (paridad app.js)
+      const sidebar = $("sidebar"),
+        overlay = $("overlay");
+      document.getElementById("menuBtn")?.addEventListener("click", () => {
+        sidebar?.classList.toggle("open");
+        overlay?.classList.toggle("open");
+      });
+      overlay?.addEventListener("click", () => {
+        sidebar?.classList.remove("open");
+        overlay?.classList.remove("open");
+      });
+      const topbar = document.querySelector(".topbar");
+      const onScroll = () => topbar?.classList.toggle("is-scrolled", window.scrollY > 8);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+      const searchClear = $("searchClear"),
+        searchLabel = document.querySelector(".topbar-search");
+      const syncSearchUI = () => {
+        const has = (search?.value || "").length > 0;
+        searchLabel?.classList.toggle("has-value", has);
+        searchClear?.classList.toggle("is-hidden", !has);
+      };
+      search?.addEventListener("input", syncSearchUI);
+      syncSearchUI();
+      searchClear?.addEventListener("click", () => {
+        if (!search) return;
+        search.value = "";
+        search.dispatchEvent(new Event("input", { bubbles: true }));
+        search.focus();
+        syncSearchUI();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "/" && document.activeElement !== search && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          search?.focus();
+        }
+        if (e.key === "Escape") {
+          sidebar?.classList.remove("open");
+          overlay?.classList.remove("open");
+        }
+      });
+      document.querySelectorAll("#sidebarNav .nav-group-head").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const g = btn.closest(".nav-group");
+          g?.classList.toggle("collapsed");
+          btn.setAttribute("aria-expanded", String(!g?.classList.contains("collapsed")));
+        });
+      });
+    })();
+  </script>
+</Base>

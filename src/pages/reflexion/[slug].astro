@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import { loadItems } from '../../lib/items.js';
+import { seoForItem, escapeHtml } from '../../lib/seo.js';
+
+export async function getStaticPaths() {
+  const { items } = loadItems();
+  return items.map((it) => ({ params: { slug: it.slug }, props: { slug: it.slug } }));
+}
+
+const { slug } = Astro.props;
+const { items, categories } = loadItems();
+const idx = items.findIndex((i) => i.slug === slug);
+if (idx === -1) throw new Error(`Slug no encontrado: ${slug}`);
+const it = items[idx];
+const prev = items[idx - 1];
+const next = items[idx + 1];
+const catLabel = (categories.find((c) => c.id === it.categoria) || {}).label || it.categoria || '';
+const seo = seoForItem(it);
+const related = items.filter((x) => x.categoria === it.categoria && x.slug !== it.slug).slice(0, 4);
+const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.trim()).filter(Boolean);
+---
+
+<Base title={seo.title} description={seo.description} ogImage={seo.ogImage} canonical={seo.canonical} jsonLd={seo.jsonLd}>
+  <header class="topbar topbar--reader">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Reflexiones diarias por Walter Escalante — inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <img src="/imagenes/logos/logo-we.webp" alt="" onerror="this.style.display='none'; this.parentElement.textContent='WE';" />
+        </span>
+        <span class="brand-copy">
+          <span class="brand-text">Reflexiones diarias</span>
+          <span class="brand-subtitle">por Walter Escalante</span>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <div class="app">
+    <main class="main">
+      <article class="reader" aria-live="polite">
+        <div class="reader-top"><a class="back-link" href="/">Biblioteca</a></div>
+        {it.imagenPath ? (
+          <div class="reader-hero">
+            <img src={`/${it.imagenPath}`} alt={it.titulo} transition:name={`img-${it.slug}`} />
+          </div>
+        ) : (
+          <div class="reader-hero"><div class="reader-hero-fallback">{it.titulo}</div></div>
+        )}
+        <div class="reader-meta">
+          <span>{catLabel}</span>
+          <span class="meta-dot"></span>
+          <span>{it.fecha}</span>
+          <span class="meta-dot"></span>
+          <span>{it.lecturaMin || 2} min</span>
+          <span class="meta-dot"></span>
+          <span>{it.palabras || 0} palabras</span>
+        </div>
+        <h1 class="reader-title" transition:name={`title-${it.slug}`}>{it.titulo}</h1>
+        {it.versiculos && it.versiculos.length > 0 && (
+          <div class="reader-verses">
+            {it.versiculos.map((v) => <span class="versiculo">{v}</span>)}
+          </div>
+        )}
+        {it.audioPath && (
+          <div class="podcast-audio">
+            <audio controls preload="none" src={`/${it.audioPath}`}></audio>
+          </div>
+        )}
+        <div class="reader-content">
+          {paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="source-footer">
+          <span>Fuente:</span>
+          {it.urlOrigen
+            ? <a class="link-muted-underline" href={it.urlOrigen} target="_blank" rel="noopener">artículo original</a>
+            : <span>—</span>}
+        </div>
+        <nav class="reader-nav" aria-label="Anterior y siguiente">
+          {prev && <a id="prevR" class="btn-ghost btn-sm" href={`/reflexion/${prev.slug}`}>Anterior</a>}
+          {next && <a id="nextR" class="btn-ghost btn-sm" href={`/reflexion/${next.slug}`}>Siguiente</a>}
+        </nav>
+        {related.length > 0 && (
+          <>
+            <div class="section-head"><h2>Relacionadas</h2><span class="line"></span></div>
+            <div class="cards">
+              {related.map((r) => <Card item={r} categories={categories} />)}
+            </div>
+          </>
+        )}
+      </article>
+    </main>
+  </div>
+</Base>
