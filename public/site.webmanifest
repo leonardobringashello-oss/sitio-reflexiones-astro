@@ -1,0 +1,14 @@
+{
+  "name": "Reflexiones diarias — Walter Escalante",
+  "short_name": "Reflexiones",
+  "description": "Biblioteca de reflexiones pastorales del Pr. Walter Escalante.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdfcf8",
+  "theme_color": "#9a7b1f",
+  "icons": [
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
