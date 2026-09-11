@@ -14,6 +14,8 @@
     "scrape:watch": "python scripts/scraper/scraper.py --interval 15",
     "seo:check": "node scripts/seo/check.mjs",
     "seo:check:strict": "node scripts/seo/check.mjs --strict",
+    "favicons:gen": "node scripts/seo/gen-favicons.mjs",
+    "og:gen": "node scripts/seo/gen-og.mjs",
     "linking:build": "node scripts/linking/build.mjs"
   },
   "keywords": [

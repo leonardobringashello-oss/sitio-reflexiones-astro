@@ -248,8 +248,6 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
         resultsCount = $("resultsCount"),
         search = $("searchInput");
 
-      document.documentElement.setAttribute("data-theme", "light");
-
       function buildFuse(list) {
         return new Fuse(list, {
           keys: [

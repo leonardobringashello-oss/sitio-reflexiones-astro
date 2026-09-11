@@ -1,6 +1,6 @@
 // src/lib/seo.js — seoFor() (skill generador-seo-og). Misma regla que scripts/seo/check.mjs.
 const SITE_NAME = 'Biblioteca Reflexiones';
-const FALLBACK_OG = 'imagenes/logos/logo-we.webp';
+const FALLBACK_OG = 'og-image.png';
 
 export function seoForIndex(total) {
   const title = `Reflexiones — Biblioteca | Pr. Walter Escalante`;
