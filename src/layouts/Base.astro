@@ -10,7 +10,7 @@ const {
   jsonLd = null,
 } = Astro.props;
 
-const site = (import.meta.env.SITE || '').replace(/\/$/, '');
+const site = (Astro.site?.toString() || import.meta.env.SITE || '').replace(/\/$/, '');
 const ogUrl = site ? `${site}${canonical}` : canonical;
 const ogImg = site
   ? `${site}/${String(ogImage).replace(/^\//, '')}`

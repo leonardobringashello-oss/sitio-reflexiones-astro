@@ -1,0 +1,79 @@
+---
+import Base from "../layouts/Base.astro";
+
+const seo = {
+  title: "Página no encontrada — Biblioteca Reflexiones",
+  description: "La página que buscás no existe o fue movida. Volvé a la biblioteca de reflexiones del Pr. Walter Escalante.",
+  canonical: "/404",
+};
+---
+
+<Base title={seo.title} description={seo.description} canonical={seo.canonical}>
+  <main class="notfound">
+    <p class="notfound-kicker">Error 404</p>
+    <h1 class="notfound-title">Esta página no existe</h1>
+    <p class="notfound-text">
+      Quizás el enlace cambió o la reflexión fue movida.
+      Podés volver a la biblioteca o usar el buscador.
+    </p>
+    <div class="notfound-actions">
+      <a class="btn-primary" href="/">Volver a la biblioteca</a>
+      <a class="btn-ghost" href="/rss.xml">Ver RSS</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .notfound {
+    max-width: 36rem;
+    margin: 0 auto;
+    padding: 4rem 1.25rem;
+    text-align: center;
+  }
+  .notfound-kicker {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .notfound-title {
+    font-family: var(--font-slab);
+    font-size: 2rem;
+    margin: 0.5rem 0;
+    color: var(--text);
+  }
+  .notfound-text {
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .notfound-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    background: var(--accent-2);
+  }
+  .btn-ghost {
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+  }
+  .btn-ghost:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-hover);
+  }
+</style>
