@@ -2,6 +2,16 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Fin de los ❌ de Pages: Source a Actions + paths-ignore
+
+- **Commit:** `sin commit`
+- **Tipo:** config
+- **Qué:** Los ❌ rojos en `pages build and deployment` eran el builder viejo de Jekyll, que seguía corriendo en cada push porque el Source de Pages nunca se había cambiado (`build_type: legacy`). No afectaban al sitio (publicaba nuestro workflow Astro, siempre verde), pero metían ruido y alarma. Solución: (1) `build_type` pasado a `workflow` por API (`gh api PUT repos/.../pages`), o sea Source = GitHub Actions, con lo que el Jekyll fantasma ya no se dispara; (2) `paths-ignore` en `deploy.yml` (`docs/**`, `.agents/**`, `AGENTS.md`, `opencode.json`) para que cambios solo-docs no disparen deploys.
+- **Por qué:** Eliminar los errores y evitar deploys inútiles.
+- **Archivos:** `.github/workflows/deploy.yml` (cambio por API en Settings, sin archivo).
+- **Verificación:** `gh api .../pages` devuelve `build_type: workflow`; tras el push, en Actions debe correr solo "Deploy Astro..." sin ningún `pages-build-deployment`.
+- **Cómo evitarlos:** si vuelve a aparecer `pages-build-deployment`, revisar que Source siga en GitHub Actions (`gh api repos/.../pages --jq .build_type` debe dar `workflow`); nunca volver a "Deploy from a branch" (Jekyll no compila Astro y `dist/` está en `.gitignore`).
+
 ## 2026-09-14 — Re-scrape 3661 "Des-graciados" + guardia de párrafos
 
 - **Commit:** (este)
