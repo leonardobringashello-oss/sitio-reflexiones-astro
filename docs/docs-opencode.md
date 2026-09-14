@@ -4,7 +4,7 @@ Entradas más recientes arriba. Una entrada por cambio, con formato completo. El
 
 ## 2026-09-14 — Drawer móvil debajo del header real
 
-- **Commit:** `sin commit`
+- **Commit:** `cbfd517`
 - **Tipo:** código/estilos
 - **Qué:** El drawer móvil (`top: 0` del fix anterior) quedaba tras el header y tapaba el mes de septiembre. Ahora al abrir se calza con JS a la altura real del header (`offsetHeight`, que en móvil envuelve a 2 filas) y se re-sincroniza en `resize`; en desktop se limpia el estilo inline.
 - **Por qué:** El header cubría el inicio del sidebar-scroll y ocultaba el mes actual.
