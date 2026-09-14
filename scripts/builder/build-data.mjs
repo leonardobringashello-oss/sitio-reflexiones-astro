@@ -26,6 +26,11 @@ const outFiles = outDirs.map(d => path.join(d, 'reflexiones.json'));
 const files = fs.readdirSync(srcDir).filter(f=> f.endsWith('.md'));
 const items = files.map(f => parseMd(path.join(srcDir, f)));
 
+// Guardia: cuerpo sin saltos de párrafo (scrape plano, ej. 3661) — se vería en un bloque
+for (const it of items) {
+  if (!it.contenido.includes('\n')) console.warn(`[WARN] sin saltos de párrafo: ${it.slug} (re-scrapear)`);
+}
+
 // ordenar por fecha desc
 items.sort((a,b)=> b.ts - a.ts);
 

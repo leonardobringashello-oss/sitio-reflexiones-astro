@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Re-scrape 3661 "Des-graciados" + guardia de párrafos
+
+- **Commit:** (este)
+- **Tipo:** código/contenido
+- **Qué:** `content/articulos/3661.md` se había scrapeado en una sola línea (el `.entry-content` no expuso bloques `<p>` esa vez y cayó al fallback plano de `extract.py:45`); la página renderizaba 1 bloque. Se re-extrajo del blog oficial → 32 párrafos. Además `scripts/builder/build-data.mjs` ahora avisa `[WARN] sin saltos de párrafo: <slug>` cuando un cuerpo sale plano, para detectarlo en el build. Era el único de 242 en ese estado.
+- **Por qué:** Sin `\n` el lector muestra todo agrupado; ningún script lo señalaba.
+- **Archivos:** `content/articulos/3661.md`, `scripts/builder/build-data.mjs`.
+- **Verificación:** `npm run build:data` sin WARN, `seo:check` 0 errores, `vitest` 7/7, `dist/reflexion/3661/index.html` con 32 `<p>`; push a `main`.
+
 ## 2026-09-14 — Open Graph completo (locale, site_name, dims, alt, article, JSON-LD)
 
 - **Commit:** `dd29496`
