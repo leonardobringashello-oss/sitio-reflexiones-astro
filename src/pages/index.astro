@@ -25,7 +25,15 @@ const clientItems = items.map((i) => ({
 const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
 ---
 
-<Base title={seo.title} description={seo.description} ogImage={seo.ogImage} ogImageAlt={seo.ogImageAlt} ogType={seo.ogType} canonical={seo.canonical} jsonLd={seo.jsonLd}>
+<Base
+  title={seo.title}
+  description={seo.description}
+  ogImage={seo.ogImage}
+  ogImageAlt={seo.ogImageAlt}
+  ogType={seo.ogType}
+  canonical={seo.canonical}
+  jsonLd={seo.jsonLd}
+>
   <header class="topbar">
     <div class="topbar-inner">
       <button class="icon-btn menu-btn" id="menuBtn" aria-label="Abrir menú" type="button">
@@ -43,14 +51,14 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       </button>
       <a
         class="brand"
-        href="https://prwalterescalante.com"
+        href="/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Reflexiones diarias por Walter Escalante — inicio"
       >
         <span class="brand-mark" aria-hidden="true">
           <img
-            src={withBase('/imagenes/logos/logo-we.webp')}
+            src={withBase("/imagenes/logos/logo-we.webp")}
             width="36"
             height="36"
             alt=""
@@ -99,13 +107,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
         aria-label="Ver código en GitHub"
         title="Ver código en GitHub"
       >
-        <img
-          src={withBase("/iconos/github_dark.svg")}
-          alt=""
-          width="18"
-          height="18"
-          loading="lazy"
-        />
+        <img src={withBase("/iconos/github_dark.svg")} alt="" width="18" height="18" loading="lazy" />
       </a>
       <span id="resultsCount" class="is-hidden" aria-live="polite"></span>
     </div>
@@ -137,12 +139,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
                   ))}
                   {catItems.length > 10 && (
                     <li class="nav-item">
-                      <button
-                        type="button"
-                        data-more={cat.id}
-                        class="link-more"
-                        aria-expanded="false"
-                      >
+                      <button type="button" data-more={cat.id} class="link-more" aria-expanded="false">
                         +{catItems.length - 10} más…
                       </button>
                     </li>
