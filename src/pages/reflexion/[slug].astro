@@ -23,7 +23,7 @@ const related = items.filter((x) => x.categoria === it.categoria && x.slug !== i
 const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.trim()).filter(Boolean);
 ---
 
-<Base title={seo.title} description={seo.description} ogImage={seo.ogImage} canonical={seo.canonical} jsonLd={seo.jsonLd}>
+<Base title={seo.title} description={seo.description} ogImage={seo.ogImage} ogImageAlt={seo.ogImageAlt} ogType={seo.ogType} canonical={seo.canonical} article={seo.article} jsonLd={seo.jsonLd}>
   <header class="topbar topbar--reader">
     <div class="topbar-inner">
       <a class="brand" href={withBase('/')} aria-label="Reflexiones diarias por Walter Escalante — inicio">
