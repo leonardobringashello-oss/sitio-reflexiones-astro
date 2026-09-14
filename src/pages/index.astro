@@ -89,6 +89,22 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
           /
         </kbd>
       </label>
+      <a
+        class="icon-btn github-link"
+        href="https://github.com/leonardobringashello-oss/sitio-reflexiones-astro"
+        target="_blank"
+        rel="noopener"
+        aria-label="Ver código en GitHub"
+        title="Ver código en GitHub"
+      >
+        <img
+          src={withBase("/iconos/github_dark.svg")}
+          alt=""
+          width="18"
+          height="18"
+          loading="lazy"
+        />
+      </a>
       <span id="resultsCount" class="is-hidden" aria-live="polite"></span>
     </div>
   </header>
