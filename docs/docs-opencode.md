@@ -2,6 +2,16 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Botón GitHub en header (4 commits del usuario)
+
+- **Commits:** `54bb5ca`, `3113b13`, `66463b4`, `ae13c24`
+- **Tipo:** código/estilos
+- **Qué:** Botón "Ver código en GitHub" en el header de home y lector: SVGs dark/light en `public/iconos/`, markup en ambas páginas, estilos desktop+reader, línea en README.
+- **Por qué:** Enlazar el repo desde el sitio.
+- **Archivos:** `public/iconos/github_dark.svg`, `public/iconos/github_light.svg`, `src/pages/index.astro`, `src/pages/reflexion/[slug].astro`, `src/styles/global.css`, `README.md`.
+- **Verificación:** iconos referenciados con `withBase()` (seguros en subruta Pages); solo se usa la variante dark, la light queda sin uso; `npm run build` 244 páginas OK.
+- **Nota:** entradas agrupadas (una feature en 4 commits del usuario).
+
 ## 2026-09-14 — Icono GitHub en el topbar (home + lectora)
 
 - **Commit:** `54bb5ca, 3113b13, 66463b4, ae13c24`
@@ -13,7 +23,7 @@ Entradas más recientes arriba. Una entrada por cambio, con formato completo. El
 
 ## 2026-09-14 — Fin de los ❌ de Pages: Source a Actions + paths-ignore
 
-- **Commit:** `sin commit`
+- **Commit:** `74e5b72`
 - **Tipo:** config
 - **Qué:** Los ❌ rojos en `pages build and deployment` eran el builder viejo de Jekyll, que seguía corriendo en cada push porque el Source de Pages nunca se había cambiado (`build_type: legacy`). No afectaban al sitio (publicaba nuestro workflow Astro, siempre verde), pero metían ruido y alarma. Solución: (1) `build_type` pasado a `workflow` por API (`gh api PUT repos/.../pages`), o sea Source = GitHub Actions, con lo que el Jekyll fantasma ya no se dispara; (2) `paths-ignore` en `deploy.yml` (`docs/**`, `.agents/**`, `AGENTS.md`, `opencode.json`) para que cambios solo-docs no disparen deploys.
 - **Por qué:** Eliminar los errores y evitar deploys inútiles.
