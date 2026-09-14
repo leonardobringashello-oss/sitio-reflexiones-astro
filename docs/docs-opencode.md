@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Icono GitHub en el topbar (home + lectora)
+
+- **Commit:** `54bb5ca, 3113b13, 66463b4, ae13c24`
+- **Tipo:** código/estilos
+- **Qué:** Botón con icono GitHub a la derecha del buscador en el home (`index.astro`) y alineado a la derecha en la lectora (`[slug].astro`, que no tiene buscador). Icono elegido: `public/iconos/github_dark.svg` (blanco, visible sobre el topbar negro); `github_light.svg` queda como reserva para fondos claros. En móvil (≤900px) el botón queda en la esquina superior derecha (fila 1) y el buscador baja a full-width (fila 2). Reusa `.icon-btn` + clase `.github-link`, con `withBase()` para el path (GitHub Pages sirve en subruta).
+- **Por qué:** Pedido del usuario: link visible al repo desde el header, en desktop y móvil.
+- **Archivos:** `public/iconos/github_dark.svg`, `public/iconos/github_light.svg` (nuevos), `src/pages/index.astro`, `src/pages/reflexion/[slug].astro`, `src/styles/global.css`, `README.md` (línea de `iconos/` en §4).
+- **Verificación:** `npm run build` (244 páginas), link e icono confirmados en `dist/index.html` y `dist/reflexion/*/index.html`, `npm test` 7/7; push a `main`.
+
 ## 2026-09-14 — Fin de los ❌ de Pages: Source a Actions + paths-ignore
 
 - **Commit:** `sin commit`
@@ -14,7 +23,7 @@ Entradas más recientes arriba. Una entrada por cambio, con formato completo. El
 
 ## 2026-09-14 — Re-scrape 3661 "Des-graciados" + guardia de párrafos
 
-- **Commit:** (este)
+- **Commit:** `630ddfe`
 - **Tipo:** código/contenido
 - **Qué:** `content/articulos/3661.md` se había scrapeado en una sola línea (el `.entry-content` no expuso bloques `<p>` esa vez y cayó al fallback plano de `extract.py:45`); la página renderizaba 1 bloque. Se re-extrajo del blog oficial → 32 párrafos. Además `scripts/builder/build-data.mjs` ahora avisa `[WARN] sin saltos de párrafo: <slug>` cuando un cuerpo sale plano, para detectarlo en el build. Era el único de 242 en ese estado.
 - **Por qué:** Sin `\n` el lector muestra todo agrupado; ningún script lo señalaba.
