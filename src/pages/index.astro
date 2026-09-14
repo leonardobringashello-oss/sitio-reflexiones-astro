@@ -50,7 +50,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       >
         <span class="brand-mark" aria-hidden="true">
           <img
-            src={withBase('/imagenes/logos/logo-we.webp')}
+            src={withBase("/imagenes/logos/logo-we.webp")}
             alt=""
             onerror="this.style.display='none'; this.parentElement.textContent='WE';"
           />
@@ -110,8 +110,8 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
                 </button>
                 <ul class="nav-list">
                   {shown.map((it) => (
-                      <li class="nav-item">
-                        <a href={withBase(`/reflexion/${it.slug}`)} title={it.titulo}>
+                    <li class="nav-item">
+                      <a href={withBase(`/reflexion/${it.slug}`)} title={it.titulo}>
                         <span class="nav-item-dot"></span>
                         <span class="truncate">{it.titulo}</span>
                       </a>
@@ -141,16 +141,17 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       <div class="main-inner">
         <h1 class="hero-title">Reflexiones diarias</h1>
         <p class="hero-sub">
-          Cada día, un pensamiento del Pr. Walter Escalante para meditar la Palabra: reflexiones,
-          devocionales y bosquejos del púlpito de{" "}
+          Cada día, un pensamiento del Pr. Walter Escalante para meditar la Palabra a través de reflexiones,
+          devocionales y bosquejos desde el púlpito de la{" "}
           <a
             href="https://www.instagram.com/iglesia.restauracion.varela/"
-            style="color: inherit; text-decoration: underline; text-underline-offset: 0.125em; text-decoration-color: rgba(0, 0, 0, 0.3);"
+            style="color: inherit; text-decoration: underline; text-underline-offset: 0.125em; text-decoration-color: var(--color-accent);"
           >
             Iglesia Restauración
-          </a>
-          , Florencio Varela. Empezá el día con Dios y compartilo con quien lo necesite.
+          </a>{" "}
+          en Florencio Varela. Empezá el día con Dios y compartilo con quien lo necesite.
         </p>
+
         <p class="hero-sub-spaced mono-faint-sm" id="totalCount" aria-live="polite">
           {total} de {total} reflexiones
         </p>
