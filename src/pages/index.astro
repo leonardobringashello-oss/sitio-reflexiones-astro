@@ -371,9 +371,22 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       // drawer + topbar + search UI (paridad app.js)
       const sidebar = $("sidebar"),
         overlay = $("overlay");
+      const topbarEl = document.querySelector(".topbar");
+      const mqMobile = window.matchMedia("(max-width: 900px)");
+      // El drawer es full-height tras el header fijo: se calza justo debajo
+      // de su altura real (en móvil el header envuelve a 2 filas).
+      const syncDrawerTop = () => {
+        if (!sidebar) return;
+        if (mqMobile.matches && topbarEl) sidebar.style.top = `${topbarEl.offsetHeight}px`;
+        else sidebar.style.top = "";
+      };
       document.getElementById("menuBtn")?.addEventListener("click", () => {
         sidebar?.classList.toggle("open");
         overlay?.classList.toggle("open");
+        if (sidebar?.classList.contains("open")) syncDrawerTop();
+      });
+      window.addEventListener("resize", () => {
+        if (sidebar?.classList.contains("open")) syncDrawerTop();
       });
       overlay?.addEventListener("click", () => {
         sidebar?.classList.remove("open");

@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Drawer móvil debajo del header real
+
+- **Commit:** `sin commit`
+- **Tipo:** código/estilos
+- **Qué:** El drawer móvil (`top: 0` del fix anterior) quedaba tras el header y tapaba el mes de septiembre. Ahora al abrir se calza con JS a la altura real del header (`offsetHeight`, que en móvil envuelve a 2 filas) y se re-sincroniza en `resize`; en desktop se limpia el estilo inline.
+- **Por qué:** El header cubría el inicio del sidebar-scroll y ocultaba el mes actual.
+- **Archivos:** `src/pages/index.astro` (script inline del drawer).
+- **Verificación:** `npm run build` (244 páginas), `npm test` 7/7, JS con `offsetHeight` confirmado en el bundle de `dist/`; push a `main`.
+
 ## 2026-09-14 — Regla: docs-opencode viaja con cada cambio + commits del usuario
 
 - **Commit:** `5b75561`
