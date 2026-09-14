@@ -50,7 +50,9 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       >
         <span class="brand-mark" aria-hidden="true">
           <img
-            src={withBase("/imagenes/logos/logo-we.webp")}
+            src={withBase('/imagenes/logos/logo-we.webp')}
+            width="36"
+            height="36"
             alt=""
             onerror="this.style.display='none'; this.parentElement.textContent='WE';"
           />
@@ -135,9 +137,14 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
                   ))}
                   {catItems.length > 10 && (
                     <li class="nav-item">
-                      <a href="#" data-more={cat.id} class="link-more">
+                      <button
+                        type="button"
+                        data-more={cat.id}
+                        class="link-more"
+                        aria-expanded="false"
+                      >
                         +{catItems.length - 10} más…
-                      </a>
+                      </button>
                     </li>
                   )}
                 </ul>
@@ -444,6 +451,32 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
           g?.classList.toggle("collapsed");
           btn.setAttribute("aria-expanded", String(!g?.classList.contains("collapsed")));
         });
+      });
+      // "+N más…" por mes: expande/colapsa los ítems restantes del grupo (a11y: <button> real).
+      document.getElementById("sidebarNav")?.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-more]");
+        if (!btn) return;
+        const group = btn.closest(".nav-group");
+        const list = group?.querySelector(".nav-list");
+        if (!list) return;
+        const catId = btn.getAttribute("data-more");
+        const expanded = btn.getAttribute("aria-expanded") === "true";
+        list.querySelectorAll("[data-more-item]").forEach((li) => li.remove());
+        if (!expanded) {
+          const rest = DATA.items.filter((i) => i.categoria === catId).slice(10);
+          const html = rest
+            .map(
+              (it) =>
+                `<li class="nav-item" data-more-item><a href="${DATA.base}reflexion/${encodeURIComponent(it.slug)}" title="${esc(it.titulo)}"><span class="nav-item-dot"></span><span class="truncate">${esc(it.titulo)}</span></a></li>`,
+            )
+            .join("");
+          btn.closest("li")?.insertAdjacentHTML("beforebegin", html);
+          btn.textContent = "Mostrar menos";
+        } else {
+          const total = DATA.items.filter((i) => i.categoria === catId).length;
+          btn.textContent = `+${total - 10} más…`;
+        }
+        btn.setAttribute("aria-expanded", String(!expanded));
       });
     })();
   </script>

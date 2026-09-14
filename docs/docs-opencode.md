@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Fix "+N más…" muerto + dims en logos
+
+- **Commit:** `sin commit`
+- **Tipo:** código/estilos
+- **Qué:** (1) El hallazgo de "cierre roto" en index.astro era falso positivo (archivo íntegro, 450 líneas, compila). (2) El botón "+N más…" del sidebar era `<a href="#">` sin handler (muerto): ahora es `<button type="button">` con toggle expande/colapsa vía `DATA.items` + `aria-expanded`. (3) Pills duplicados intencionales, sin cambio. (4) `width="36" height="36"` en logos de home y lector.
+- **Por qué:** Revisión externa de index.astro (fortalezas confirmadas: SEO, a11y, payload mínimo, fallback de logo, noopener).
+- **Archivos:** `src/pages/index.astro`, `src/pages/reflexion/[slug].astro`, `src/styles/global.css` (reset `.link-more` como botón).
+- **Verificación:** `npm run build` (244 páginas), `npm test` 7/7; en `dist/`: botón presente, cero `href="#"`, handler en bundle, split 10+resto verificado contra JSON real; push a `main`.
+
 ## 2026-09-14 — Botón GitHub en header (4 commits del usuario)
 
 - **Commits:** `54bb5ca`, `3113b13`, `66463b4`, `ae13c24`

@@ -1643,6 +1643,16 @@ hero-sub-title .reader-content em {
   color: var(--text-faint);
   font-size: 0.6875rem;
   font-family: var(--font-mono);
+  background: none;
+  border: 0;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.link-more:hover {
+  color: var(--text);
+  text-decoration: underline;
 }
 
 .empty-li {
