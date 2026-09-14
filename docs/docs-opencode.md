@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Consistencia de favicon y og-image
+
+- **Commit:** `6965e13`
+- **Tipo:** código/estilos
+- **Qué:** `public/favicon.svg` normalizado (atributos reordenados, `#000000` → `#000`, mismo render) y `public/og-image.png` re-exportado (48KB → 27KB). Cambio del usuario.
+- **Por qué:** Consistencia de marca entre favicon y og-image.
+- **Archivos:** `public/favicon.svg`, `public/og-image.png`.
+- **Verificación:** `npm run build` (244 páginas), `seo:check` 0 errores; diff del svg confirma solo reordenamiento sin cambio visual.
+
 ## 2026-09-14 — Drawer móvil debajo del header real
 
 - **Commit:** `cbfd517`
