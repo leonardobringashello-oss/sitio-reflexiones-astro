@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Refactor formato index.astro (usuario)
+
+- **Commit:** `65c17c9`
+- **Tipo:** código/estilos
+- **Qué:** Refactor de legibilidad en `src/pages/index.astro` (props de `<Base>` en multilínea, quotes y formato de botones). Incluye un cambio funcional: brand `href` de `https://prwalterescalante.com` a `/` (nota: conserva `target="_blank"`, abre la home en pestaña nueva). Cambio del usuario.
+- **Por qué:** Legibilidad del código.
+- **Archivos:** `src/pages/index.astro` (13+/16-).
+- **Verificación:** `npm run build` (244 páginas OK) tras el cambio.
+
 ## 2026-09-14 — Fix "+N más…" muerto + dims en logos
 
 - **Commit:** `7e33b97`
