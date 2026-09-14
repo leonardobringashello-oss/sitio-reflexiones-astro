@@ -4,6 +4,7 @@ import Card from "../components/Card.astro";
 import Featured from "../components/Featured.astro";
 import { loadItems } from "../lib/items.js";
 import { seoForIndex } from "../lib/seo.js";
+import { withBase, basePrefix } from "../lib/base.js";
 
 const { items, categories, total } = loadItems();
 const seo = seoForIndex(total);
@@ -16,7 +17,7 @@ const clientItems = items.map((i) => ({
   fecha: i.fecha,
   categoria: i.categoria,
   excerpt: i.excerpt,
-  imagenPath: i.imagenPath ? `/${i.imagenPath}` : null,
+  imagenPath: i.imagenPath ? withBase(`/${i.imagenPath}`) : null,
   versiculos: i.versiculos,
   lecturaMin: i.lecturaMin,
   palabras: i.palabras,
@@ -49,7 +50,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
       >
         <span class="brand-mark" aria-hidden="true">
           <img
-            src="/imagenes/logos/logo-we.webp"
+            src={withBase('/imagenes/logos/logo-we.webp')}
             alt=""
             onerror="this.style.display='none'; this.parentElement.textContent='WE';"
           />
@@ -109,8 +110,8 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
                 </button>
                 <ul class="nav-list">
                   {shown.map((it) => (
-                    <li class="nav-item">
-                      <a href={`/reflexion/${it.slug}`} title={it.titulo}>
+                      <li class="nav-item">
+                        <a href={withBase(`/reflexion/${it.slug}`)} title={it.titulo}>
                         <span class="nav-item-dot"></span>
                         <span class="truncate">{it.titulo}</span>
                       </a>
@@ -213,7 +214,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
               .slice(0, 8)
               .map((it, i, arr) => (
                 <span>
-                  <a href={`/reflexion/${it.slug}`}>{it.titulo}</a>
+                  <a href={withBase(`/reflexion/${it.slug}`)}>{it.titulo}</a>
                   {i < arr.length - 1 ? <span> &nbsp;·&nbsp; </span> : null}
                 </span>
               ))}
@@ -227,7 +228,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
   <script
     id="astro-data"
     type="application/json"
-    set:html={JSON.stringify({ items: clientItems, catLabel, total })}
+    set:html={JSON.stringify({ items: clientItems, catLabel, total, base: basePrefix() })}
   ></script>
   <script>
     import Fuse from "fuse.js";
@@ -235,7 +236,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
     // Interactividad client-side (sin framework): filtros + búsqueda + destacada.
     (() => {
       const dataEl = document.getElementById("astro-data");
-      const DATA = dataEl ? JSON.parse(dataEl.textContent) : { items: [], catLabel: {}, total: 0 };
+      const DATA = dataEl ? JSON.parse(dataEl.textContent) : { items: [], catLabel: {}, total: 0, base: "/" };
       let activeCategory = "all";
       let searchQuery = "";
       let featuredIdx = 0;
@@ -283,7 +284,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
         const media = it.imagenPath
           ? `<div class="card-media"><img src="${it.imagenPath}" alt="${esc(it.titulo)}" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'"><div class="card-media-fallback media-fallback-hidden">${esc(it.titulo)}</div></div>`
           : `<div class="card-media"><div class="card-media-fallback">${esc(it.titulo)}</div></div>`;
-        return `<a href="/reflexion/${encodeURIComponent(it.slug)}" class="card">${media}<div class="card-body"><div class="card-kicker"><span class="dot"></span> ${cat} <span class="kicker-date">${esc(it.fecha || "")}</span></div><h3 class="card-title">${esc(it.titulo)}</h3><div class="card-excerpt">${esc(it.excerpt || "")}</div><div class="card-meta"><span>${it.lecturaMin || 2} min</span><span class="meta-dot"></span><span>${v}</span></div></div></a>`;
+        return `<a href="${DATA.base}reflexion/${encodeURIComponent(it.slug)}" class="card">${media}<div class="card-body"><div class="card-kicker"><span class="dot"></span> ${cat} <span class="kicker-date">${esc(it.fecha || "")}</span></div><h3 class="card-title">${esc(it.titulo)}</h3><div class="card-excerpt">${esc(it.excerpt || "")}</div><div class="card-meta"><span>${it.lecturaMin || 2} min</span><span class="meta-dot"></span><span>${v}</span></div></div></a>`;
       }
       function renderCards(list) {
         if (resultsCount) resultsCount.textContent = `${list.length}`;
@@ -319,7 +320,7 @@ const catLabel = Object.fromEntries(categories.map((c) => [c.id, c.short]));
         const media = it.imagenPath
           ? `<div class="feature-media"><img src="${it.imagenPath}" alt="${esc(it.titulo)}" loading="eager" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'"><div class="feature-media-fallback media-fallback-hidden">${esc(it.titulo)}<br><span class="media-fallback-date">${esc(it.fecha || "")}</span></div></div>`
           : `<div class="feature-media"><div class="feature-media-fallback">${esc(it.titulo)}</div></div>`;
-        featured.innerHTML = `<div class="feature-card-top"><div class="eyebrow">${cat} · ${esc(it.fecha || "")} · ${it.lecturaMin || 2} min</div><h2 class="feature-title">${esc(it.titulo)}</h2></div>${media}<div class="feature-body"><div class="feature-excerpt">${esc(it.excerpt || "")}</div><div class="feature-meta"><span class="versiculo">${v}</span><span class="meta-dot"></span><span>${it.palabras || 0} palabras</span><span class="spacer-flex"></span><a class="btn-primary" href="/reflexion/${encodeURIComponent(it.slug)}">Leer reflexión →</a></div></div>`;
+        featured.innerHTML = `<div class="feature-card-top"><div class="eyebrow">${cat} · ${esc(it.fecha || "")} · ${it.lecturaMin || 2} min</div><h2 class="feature-title">${esc(it.titulo)}</h2></div>${media}<div class="feature-body"><div class="feature-excerpt">${esc(it.excerpt || "")}</div><div class="feature-meta"><span class="versiculo">${v}</span><span class="meta-dot"></span><span>${it.palabras || 0} palabras</span><span class="spacer-flex"></span><a class="btn-primary" href="${DATA.base}reflexion/${encodeURIComponent(it.slug)}">Leer reflexión →</a></div></div>`;
         if (heroMeta) heroMeta.textContent = `${featuredIdx + 1} / ${list.length} — ${it.titulo}`;
       }
       function rerender() {

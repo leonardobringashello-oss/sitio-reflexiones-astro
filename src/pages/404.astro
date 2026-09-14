@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import { withBase } from "../lib/base.js";
 
 const seo = {
   title: "Página no encontrada — Biblioteca Reflexiones",
@@ -17,8 +18,8 @@ const seo = {
       Podés volver a la biblioteca o usar el buscador.
     </p>
     <div class="notfound-actions">
-      <a class="btn-primary" href="/">Volver a la biblioteca</a>
-      <a class="btn-ghost" href="/rss.xml">Ver RSS</a>
+      <a class="btn-primary" href={withBase('/')}>Volver a la biblioteca</a>
+      <a class="btn-ghost" href={withBase('/rss.xml')}>Ver RSS</a>
     </div>
   </main>
 </Base>

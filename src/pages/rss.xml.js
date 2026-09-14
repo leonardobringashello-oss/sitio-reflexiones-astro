@@ -1,5 +1,6 @@
 import rss from "@astrojs/rss";
 import { loadItems } from "../lib/items.js";
+import { withBase } from "../lib/base.js";
 
 export async function GET(context) {
   const { items } = loadItems();
@@ -15,7 +16,7 @@ export async function GET(context) {
         title: i.titulo,
         pubDate: new Date(i.fechaISO),
         description: i.excerpt,
-        link: `/reflexion/${i.slug}/`,
+        link: withBase(`/reflexion/${i.slug}/`),
       })),
   });
 }

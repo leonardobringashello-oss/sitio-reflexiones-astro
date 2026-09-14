@@ -1,5 +1,6 @@
 ---
 // src/components/Featured.astro — port de renderFeatured() (ui-helpers.js:82).
+import { withBase } from '../lib/base.js';
 const { item, categories } = Astro.props;
 const cat = item ? ((categories || []).find((c) => c.id === item.categoria)?.short || item.categoria || '') : '';
 const excerpt = item ? ((item.excerpt && item.excerpt.trim()) || '') : '';
@@ -13,7 +14,7 @@ const versiculo = item ? ((item.versiculos && item.versiculos[0]) || 'Reflexión
   </div>
   {item.imagenPath ? (
     <div class="feature-media">
-      <img src={`/${item.imagenPath}`} alt={item.titulo} loading="eager" transition:name={`img-${item.slug}`} onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'" />
+      <img src={withBase(`/${item.imagenPath}`)} alt={item.titulo} loading="eager" transition:name={`img-${item.slug}`} onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'" />
       <div class="feature-media-fallback media-fallback-hidden">{item.titulo}<br /><span class="media-fallback-date">{item.fecha}</span></div>
     </div>
   ) : (
@@ -26,7 +27,7 @@ const versiculo = item ? ((item.versiculos && item.versiculos[0]) || 'Reflexión
       <span class="meta-dot"></span>
       <span>{item.palabras || 0} palabras</span>
       <span class="spacer-flex"></span>
-      <a class="btn-primary" href={`/reflexion/${item.slug}`}>Leer reflexión →</a>
+      <a class="btn-primary" href={withBase(`/reflexion/${item.slug}`)}>Leer reflexión →</a>
     </div>
   </div>
   </>

@@ -1,0 +1,57 @@
+# Deploy del sitio Astro a GitHub Pages.
+# Requiere en el repo: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Sin esto, Pages usa Jekyll por defecto y falla con "Invalid YAML front matter"
+# (Jekyll no sabe compilar Astro ni nuestro frontmatter de content/articulos/).
+name: Deploy Astro to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE: https://leonardobringashello-oss.github.io/sitio-reflexiones-astro
+  PAGES_BASE: /sitio-reflexiones-astro
+  NODE_VERSION: 20
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: Install deps
+        run: npm ci
+      - name: Build (datos + Astro)
+        run: npm run build
+      - name: SEO check
+        run: npm run seo:check
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

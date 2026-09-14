@@ -8,8 +8,13 @@ import sitemap from '@astrojs/sitemap';
 // sitemap, RSS y canonical absolutos. Sin SITE el build igual funciona,
 // pero el SEO sale relativo (solo válido para demo local).
 const SITE = (process.env.SITE || 'https://reflexiones-demo.leobringasatlife.site').replace(/\/$/, '');
+// Base-path para GitHub Pages (project pages sirven en subruta).
+// Local: PAGES_BASE no definido -> '/' (sin cambios). CI: PAGES_BASE=/sitio-reflexiones-astro.
+const BASE_RAW = (process.env.PAGES_BASE || '/').trim();
+const BASE = BASE_RAW === '/' ? '/' : `/${BASE_RAW.replace(/^\/+|\/+$/g, '')}`;
 export default defineConfig({
   site: SITE,
+  base: BASE,
   output: 'static',
   outDir: 'dist',
   publicDir: 'public',

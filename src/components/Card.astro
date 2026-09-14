@@ -1,16 +1,17 @@
 ---
 // src/components/Card.astro — port 1:1 de renderCard() (ui-helpers.js:58).
 // Mantiene clases CSS para no romper style.css.
+import { withBase } from '../lib/base.js';
 const { item, categories } = Astro.props;
 const cat = (categories || []).find((c) => c.id === item.categoria)?.short || item.categoria || '';
 const excerpt = (item.excerpt && item.excerpt.trim()) || (item.contenido || '').slice(0, 120).trim() + '…';
 const versiculo = (item.versiculos && item.versiculos[0]) || '—';
 const lectura = `${item.lecturaMin || 2} min`;
 ---
-<a href={`/reflexion/${item.slug}`} class="card" data-slug={item.slug} data-cat={item.categoria}>
+<a href={withBase(`/reflexion/${item.slug}`)} class="card" data-slug={item.slug} data-cat={item.categoria}>
   {item.imagenPath ? (
     <div class="card-media">
-      <img src={`/${item.imagenPath}`} alt={item.titulo} loading="lazy" transition:name={`img-${item.slug}`} onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'" />
+      <img src={withBase(`/${item.imagenPath}`)} alt={item.titulo} loading="lazy" transition:name={`img-${item.slug}`} onerror="this.style.display='none'; this.nextElementSibling.style.display='grid'" />
       <div class="card-media-fallback media-fallback-hidden">{item.titulo}</div>
     </div>
   ) : (

@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Card from '../../components/Card.astro';
 import { loadItems } from '../../lib/items.js';
 import { seoForItem, escapeHtml } from '../../lib/seo.js';
+import { withBase } from '../../lib/base.js';
 
 export async function getStaticPaths() {
   const { items } = loadItems();
@@ -25,9 +26,9 @@ const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.tr
 <Base title={seo.title} description={seo.description} ogImage={seo.ogImage} canonical={seo.canonical} jsonLd={seo.jsonLd}>
   <header class="topbar topbar--reader">
     <div class="topbar-inner">
-      <a class="brand" href="/" aria-label="Reflexiones diarias por Walter Escalante — inicio">
+      <a class="brand" href={withBase('/')} aria-label="Reflexiones diarias por Walter Escalante — inicio">
         <span class="brand-mark" aria-hidden="true">
-          <img src="/imagenes/logos/logo-we.webp" alt="" onerror="this.style.display='none'; this.parentElement.textContent='WE';" />
+          <img src={withBase('/imagenes/logos/logo-we.webp')} alt="" onerror="this.style.display='none'; this.parentElement.textContent='WE';" />
         </span>
         <span class="brand-copy">
           <span class="brand-text">Reflexiones diarias</span>
@@ -40,10 +41,10 @@ const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.tr
   <div class="app">
     <main class="main">
       <article class="reader" aria-live="polite">
-        <div class="reader-top"><a class="back-link" href="/">Biblioteca</a></div>
+        <div class="reader-top"><a class="back-link" href={withBase('/')}>Biblioteca</a></div>
         {it.imagenPath ? (
           <div class="reader-hero">
-            <img src={`/${it.imagenPath}`} alt={it.titulo} transition:name={`img-${it.slug}`} />
+            <img src={withBase(`/${it.imagenPath}`)} alt={it.titulo} transition:name={`img-${it.slug}`} />
           </div>
         ) : (
           <div class="reader-hero"><div class="reader-hero-fallback">{it.titulo}</div></div>
@@ -65,7 +66,7 @@ const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.tr
         )}
         {it.audioPath && (
           <div class="podcast-audio">
-            <audio controls preload="none" src={`/${it.audioPath}`}></audio>
+            <audio controls preload="none" src={withBase(`/${it.audioPath}`)}></audio>
           </div>
         )}
         <div class="reader-content">
@@ -78,8 +79,8 @@ const paragraphs = String(it.contenido || '').split(/\n{2,}|\n/).map((p) => p.tr
             : <span>—</span>}
         </div>
         <nav class="reader-nav" aria-label="Anterior y siguiente">
-          {prev && <a id="prevR" class="btn-ghost btn-sm" href={`/reflexion/${prev.slug}`}>Anterior</a>}
-          {next && <a id="nextR" class="btn-ghost btn-sm" href={`/reflexion/${next.slug}`}>Siguiente</a>}
+          {prev && <a id="prevR" class="btn-ghost btn-sm" href={withBase(`/reflexion/${prev.slug}`)}>Anterior</a>}
+          {next && <a id="nextR" class="btn-ghost btn-sm" href={withBase(`/reflexion/${next.slug}`)}>Siguiente</a>}
         </nav>
         {related.length > 0 && (
           <>
