@@ -91,6 +91,7 @@ Ver `docs/architecture.md` para el mapa de módulos profundos.
 │   ├── data/              # DERIVADO: reflexiones.json + relaciones.json (ver §5)
 │   ├── imagenes/          # DERIVADO: copia de content/imagenes en build
 │   └── audios/            # DERIVADO: copia de content/audios en build
+│   ├── iconos/            # FUENTE: github_dark.svg (blanco, topbar dark) + github_light.svg (reserva fondo claro)
 ├── dist/                  # DERIVADO: salida `astro build` (deploy)
 ├── content/ ↔ public/ ↔ dist/  # ver §5 para regla de oro
 ├── docs/architecture.md   # seams, interfaces y depth (vocabulario codebase-design)
