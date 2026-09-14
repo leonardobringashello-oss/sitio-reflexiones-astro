@@ -4,7 +4,7 @@ Entradas más recientes arriba. Una entrada por cambio, con formato completo. El
 
 ## 2026-09-14 — Regla: docs-opencode viaja con cada cambio + commits del usuario
 
-- **Commit:** `sin commit`
+- **Commit:** `5b75561`
 - **Tipo:** docs
 - **Qué:** Se cambió la regla del skill `documentar-cambios`: `docs-opencode.md` ahora viaja en el mismo commit del cambio (antes quedaba sin commit). Además se registran dos commits hechos por el usuario: `05326d6` (retoque de formato/claridad del hero en `src/pages/index.astro`, 9+/8-) y `9b9eac3` (alta de `AGENTS.md`, `docs/docs-opencode.md` y `opencode.json` al repo; verificado sin secretos ni rutas locales).
 - **Por qué:** El usuario decidió que es más prolijo que el changelog viaje con cada cambio.
