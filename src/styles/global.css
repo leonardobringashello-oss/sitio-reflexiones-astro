@@ -375,6 +375,23 @@ button {
   box-shadow: none;
 }
 
+/* GitHub link: a la derecha del buscador (desktop), esquina sup. derecha (móvil) */
+.github-link {
+  flex-shrink: 0;
+  margin-left: 0.25rem;
+}
+
+.github-link img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* Reader: sin buscador, el icono se alinea a la derecha */
+.github-link--reader {
+  margin-left: auto;
+}
+
 /* Layout */
 .app {
   display: flex;
@@ -1376,6 +1393,11 @@ hero-sub-title .reader-content em {
     flex-basis: 100%;
     max-width: none;
     margin-left: 0;
+  }
+
+  .github-link {
+    order: 2;
+    margin-left: auto;
   }
 
   .sidebar {
