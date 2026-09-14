@@ -2,6 +2,16 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Open Graph completo (locale, site_name, dims, alt, article, JSON-LD)
+
+- **Commit:** `dd29496`
+- **Tipo:** código/seo
+- **Qué:** Auditoría OG 76/100 → `src/layouts/Base.astro` ahora emite `og:site_name`, `og:locale` (`es_AR`), `og:image:width/height` (1200/630), `og:image:type` (según extensión), `og:image:alt` y `twitter:image:alt`; `og:type` es `website` en home y `article` en reflexiones (antes todo era `article`), con `article:published_time/modified_time/section/author` en artículos. JSON-LD en home (`WebSite` con `url`) y en artículos (`Article` con `mainEntityOfPage`, logo del publisher e imagen absoluta); más `meta author` y `meta robots`. `src/lib/seo.js` provee `ogType`, `ogImageAlt`, `article` y `jsonLd` de índice.
+- **Por qué:** Faltaban dimensiones de imagen, alt, site_name, locale y structured data; el type `article` en la home era incorrecto.
+- **No se hizo:** `twitter:site` (no hay usuario de X conocido; inventarlo empeora el SEO). "Missing H1" y "canonical differs" del analizador son falsos positivos: el H1 existe (`index.astro:142`) y la canónica con `/` final es intencional con `trailingSlash: 'never'`.
+- **Archivos:** `src/layouts/Base.astro`, `src/lib/seo.js`, `src/pages/index.astro`, `src/pages/reflexion/[slug].astro`.
+- **Verificación:** `npm run build` (244 páginas), `seo:check` 0 errores, `vitest` 7/7, head de `dist/index.html` y de un artículo verificados tag por tag; push a `main`.
+
 ## 2026-09-14 — Consistencia de favicon y og-image
 
 - **Commit:** `6965e13`
