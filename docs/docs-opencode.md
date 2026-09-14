@@ -4,7 +4,7 @@ Entradas más recientes arriba. Una entrada por cambio, con formato completo. El
 
 ## 2026-09-14 — Fix "+N más…" muerto + dims en logos
 
-- **Commit:** `sin commit`
+- **Commit:** `7e33b97`
 - **Tipo:** código/estilos
 - **Qué:** (1) El hallazgo de "cierre roto" en index.astro era falso positivo (archivo íntegro, 450 líneas, compila). (2) El botón "+N más…" del sidebar era `<a href="#">` sin handler (muerto): ahora es `<button type="button">` con toggle expande/colapsa vía `DATA.items` + `aria-expanded`. (3) Pills duplicados intencionales, sin cambio. (4) `width="36" height="36"` en logos de home y lector.
 - **Por qué:** Revisión externa de index.astro (fortalezas confirmadas: SEO, a11y, payload mínimo, fallback de logo, noopener).
