@@ -2,6 +2,15 @@
 
 Entradas más recientes arriba. Una entrada por cambio, con formato completo. El historial no se reescribe: solo se agrega.
 
+## 2026-09-14 — Nueva reflexión Credenciales (14/09/2026)
+
+- **Commit:** `66abfb4`
+- **Tipo:** contenido
+- **Qué:** Scrape `--once` trajo `Credenciales` (14/09/2026, 854 palabras, sin audio) con su imagen; `build:data` → 243 ítems.
+- **Por qué:** Pedido del usuario: había nueva reflexión en la web del pastor por descargar y publicar.
+- **Archivos:** `content/articulos/credenciales.md` (nuevo), `content/imagenes/credenciales.png` (nuevo).
+- **Verificación:** `npm run build` (245 páginas, `/reflexion/credenciales` en `dist/`), `seo:check` 243 items 0 errores; push a `main` (deploy Pages encolado run 34886850876). Se restauraron 4 borrados locales ajenos (logos/docs/icono) sin commitear.
+
 ## 2026-09-14 — Refactor formato index.astro (usuario)
 
 - **Commit:** `65c17c9`
